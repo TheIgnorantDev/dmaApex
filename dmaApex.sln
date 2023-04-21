@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dmaApex", "dmaApex.vcxproj", "{EBF3E471-F2AA-459C-AABF-B950D40F67EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBF3E471-F2AA-459C-AABF-B950D40F67EF}.Debug|x64.ActiveCfg = Debug|x64
+		{EBF3E471-F2AA-459C-AABF-B950D40F67EF}.Debug|x64.Build.0 = Debug|x64
+		{EBF3E471-F2AA-459C-AABF-B950D40F67EF}.Debug|x86.ActiveCfg = Debug|Win32
+		{EBF3E471-F2AA-459C-AABF-B950D40F67EF}.Debug|x86.Build.0 = Debug|Win32
+		{EBF3E471-F2AA-459C-AABF-B950D40F67EF}.Release|x64.ActiveCfg = Release|x64
+		{EBF3E471-F2AA-459C-AABF-B950D40F67EF}.Release|x64.Build.0 = Release|x64
+		{EBF3E471-F2AA-459C-AABF-B950D40F67EF}.Release|x86.ActiveCfg = Release|Win32
+		{EBF3E471-F2AA-459C-AABF-B950D40F67EF}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90DB42C8-F4A4-4DC4-8637-A8F55C922FDC}
+	EndGlobalSection
+EndGlobal
