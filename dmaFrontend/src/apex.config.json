@@ -1,0 +1,24 @@
+{
+    "enabled": true,
+    "connected": true,
+    "aimbot":{
+        "enabled": true,
+        "fov": 180,
+        "smooth": 0.1,
+        "bone": 8,
+        "rcs": true,
+        "rcs_smooth": 2,
+        "rcs_fov": 180
+    },
+    "esp":{
+        "enabled": true,
+        "box": true,
+        "name": true,
+        "health": true,
+        "weapon": true,
+        "snaplines": true,
+        "chams": true,
+        "chams_visible": true,
+        "chams_xqz": true
+    }
+}

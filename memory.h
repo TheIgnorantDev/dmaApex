@@ -77,19 +77,20 @@ public:
 
 	uint64_t ScanPointer(VMM_HANDLE x, uint64_t ptr_address, const uint32_t offsets[], int level);
 };
-
+inline DWORD       dwReadCache = NULL;
 template<typename T>
 inline bool Memory::Read(VMM_HANDLE x, uint64_t address, T& out)
 {
 	std::lock_guard<std::mutex> l(m);
-	return VMMDLL_MemRead(x, dwPID, address, (PBYTE)&out, (DWORD)sizeof(out));
+	//printf("Read: %I64X\n", address);
+	return VMMDLL_MemReadEx(x, dwPID, address, (PBYTE)&out, (DWORD)sizeof(out), &dwReadCache, VMMDLL_FLAG_NOCACHE);
 }
 
 template<typename T>
 inline bool Memory::ReadArray(VMM_HANDLE x, uint64_t address, T out[], size_t len)
 {
 	std::lock_guard<std::mutex> l(m);
-	return VMMDLL_MemRead(x, dwPID, address, (PBYTE)&out, sizeof(out) * len) == 0;
+	return VMMDLL_MemReadEx(x, dwPID, address, (PBYTE)&out, sizeof(out) * len, &dwReadCache, VMMDLL_FLAG_NOCACHE) == 0;
 }
 
 template<typename T>

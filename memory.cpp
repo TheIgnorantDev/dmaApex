@@ -61,17 +61,19 @@ process_status Memory::get_proc_status()
 
 void Memory::check_proc()
 {
-	if (status == process_status::FOUND_READY)
-	{
-		short c;
-		Read<short>(hVmm, proc.baseaddr, c);
+	/*if (status == process_status::FOUND_READY)
+	{*/
+		//short c;
+		//VMMDLL_MemRead(hVmm, dwPID, proc.baseaddr, (PBYTE)& c, sizeof(c));
+		////Read<short>(hVmm, proc.baseaddr, c);
+		//printf("c: %x\n", c);
 
-		if (c != 0x5A4D)
-		{
-			status = process_status::FOUND_NO_ACCESS;
-			close_proc();
-		}
-	}
+		//if (c != 0x5A4D)
+		//{
+		//	status = process_status::FOUND_NO_ACCESS;
+		//	close_proc();
+		//}
+	//}
 }
 
 void Memory::open_proc(const char* name)
@@ -79,27 +81,32 @@ void Memory::open_proc(const char* name)
 	if (!hVmm)
 	{
 		printf("Attempting to initiate your FPGA device directly..\n");
-		LPSTR args[] = { (LPSTR)"-device", (LPSTR)"fpga" };
+		LPSTR args[] = { (LPSTR)"-device", (LPSTR)"fpga", (LPSTR)"-v" };
 		hVmm = VMMDLL_Initialize(3, args);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // set text color back to normal
+		printf("Attempting to grab the process id of 'r5apex.exe' on target system..\n");
+		conn = false;
 	}
 
-	if (conn)
+	if (!hVmm == false && !conn)
 	{
-		bool bResult;
-
+		bool bResult = false;
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_BLUE); // set text color to intense purple
 		printf("[INFO] ");
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // set text color back to normal
 		printf("Attempting to grab the process id of 'r5apex.exe' on target system..\n");
-
 		// try to get the process id of the 'r5apex.exe' process
-		bResult = VMMDLL_PidGetFromName(hVmm, (LPSTR)"r5apex.exe", &dwPID);
-		if (!bResult) { printf("Failed to get process id of 'r5apex.exe' on target system\n"); exit(0); }
+		bResult = VMMDLL_PidGetFromName(hVmm, (LPSTR)name, &dwPID);
+		if (dwPID == 0) { printf("Failed to get process id of '%s' on target system\n",name); return; }
 		PVMMDLL_MAP_MODULEENTRY pModuleEntryExplorer;
-		bResult = VMMDLL_Map_GetModuleFromNameU(hVmm, dwPID, (LPSTR)"r5apex.exe", &pModuleEntryExplorer);
-		if (!bResult) { printf("Failed to get module entry of 'r5apex.exe' on target system\n"); exit(0); }
+		bResult = VMMDLL_Map_GetModuleFromNameU(hVmm, dwPID, (LPSTR)name, &pModuleEntryExplorer);
+		if (pModuleEntryExplorer== NULL) { printf("Failed to get module entry of '%s' on target system\n",name); return; }
 		proc.baseaddr = pModuleEntryExplorer->vaBase;
 		proc.hProcess = dwPID;
+		status == process_status::FOUND_READY;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // set text color back to normal
+		printf("PID: %i & BASE_ADDR: 0x%I64X FOUND\n",dwPID,proc.baseaddr);
+		conn = true;
 	}
 	else
 	{
@@ -110,7 +117,7 @@ void Memory::open_proc(const char* name)
 
 void Memory::close_proc()
 {
-	free(hVmm);
+	VMMDLL_Close(hVmm);
 }
 
 uint64_t Memory::ScanPointer(VMM_HANDLE x, uint64_t ptr_address, const uint32_t offsets[], int level)
